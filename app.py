@@ -41,8 +41,17 @@ def get_pokemon_list_gen(gen):
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
     return jsonify(gen_pokemon)
 
-# GET /pokemon/{pokemon_id}
-# TODO
+# GET /pokemon/{pokemon_id} (int)
+@app.route('/pokeranker/api/v1.0/pokemon/<int:pokemon_id>', methods=['GET'])
+def get_pokemon(pokemon_id):
+    if type(pokemon_id) is not int or pokemon_id < 1 or pokemon_id > 807:
+        abort(404)
+    found = False
+    for poke in pokemon:
+        if poke["pokemon_id"] == pokemon_id:
+            return jsonify(poke)
+    if not found:
+        abort(404)
 
 # GET /votes
 @app.route('/pokeranker/api/v1.0/votes')
@@ -52,8 +61,17 @@ def get_votes():
 # POST /votes
 # TODO
 
-# GET /votes/{votes_id}
-# TODO
+# GET /votes/{vote_id} (string)
+@app.route('/pokeranker/api/v1.0/votes/<str:vote_id>', methods=['GET'])
+def get_vote_status(vote_id):
+    if type(vote_id) is not str: # TODO: validate the vote id
+        abort(404)
+    found = False
+    for vote in votes:
+        if vote["vote_id"] == vote_id:
+            return jsonify(vote)
+    if not found:
+        abort(404)
 
 # GET /ranks/match
 @app.route('/pokeranker/api/v1.0/ranks/match', methods=['GET'])
