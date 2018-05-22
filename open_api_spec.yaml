@@ -12,7 +12,7 @@ paths:
       summary: return list of all pokemon (includes rank info)
       operationId: get_pokemon_list
       tags:
-        - pokemonlist
+        - pokemon
       responses:
         '200':
           description: pokemon list
@@ -106,7 +106,7 @@ paths:
           description: Which generation to get pokemon from
       operationId:  get_pokemon_list_gen
       tags:
-        - pokemonlist
+        - pokemon
       responses:
         '200':
           description: pokemon ranks

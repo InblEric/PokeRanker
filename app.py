@@ -26,16 +26,61 @@ pokemon = [
         "genRank": 1
     }]
 
+votes = []
+
+# GET /pokemon
 @app.route('/pokeranker/api/v1.0/pokemon', methods=['GET'])
 def get_pokemon_list():
     return jsonify(pokemon)
 
+# GET /pokemon/gen/{gen}
 @app.route('/pokeranker/api/v1.0/pokemon/gen/<int:gen>', methods=['GET'])
 def get_pokemon_list_gen(gen):
     if type(gen) is not int or gen < 1 or gen > 7:
         abort(404)
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
     return jsonify(gen_pokemon)
+
+# GET /pokemon/{pokemon_id}
+# TODO
+
+# GET /votes
+@app.route('/pokeranker/api/v1.0/votes')
+def get_votes():
+    return jsonify(votes)
+
+# POST /votes
+# TODO
+
+# GET /votes/{votes_id}
+# TODO
+
+# GET /ranks/match
+@app.route('/pokeranker/api/v1.0/ranks/match', methods=['GET'])
+def get_match():
+    # TODO get two pokemon from pokemon at random and build this dict
+    match = {
+        "one": "string",
+        "two": "string",
+        "oneid": 0,
+        "twoid": 0
+    }
+    return jsonify(match)
+
+# GET /ranks/match/gen/{gen}
+@app.route('/pokeranker/api/v1.0/ranks/match/gen/<int:gen>', methods=['GET'])
+def get_match_gen(gen):
+    if type(gen) is not int or gen < 1 or gen > 7:
+        abort(404)
+    gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
+    # TODO get two pokemon from gen_pokemon at random and build this dict
+    match = {
+        "one": "string",
+        "two": "string",
+        "oneid": 0,
+        "twoid": 0
+    }
+    return jsonify(match)
 
 if __name__ == '__main__':
     app.run(debug=False)
