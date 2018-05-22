@@ -5,12 +5,12 @@ info:
   license:
     name: MIT
 servers:
-  - url: http://127.0.0.1:5000/api/v1.0
+  - url: http://127.0.0.1:5000/pokeranker/api/v1.0
 paths:
   /pokemon:
     get:
       summary: return list of all pokemon (includes rank info)
-      operationId: getPokemonList
+      operationId: get_pokemon_list
       tags:
         - pokemonlist
       responses:
@@ -23,7 +23,7 @@ paths:
   /votes:
     get:
       summary: get list of all votes
-      operationId: getVotes
+      operationId: get_votes
       tags:
         - vote
       responses:
@@ -42,7 +42,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/UserVote'
-      operationId: submitVote
+      operationId: submit_vote
       tags:
         - vote
       responses:
@@ -62,7 +62,7 @@ paths:
             type: string
           required: true
           description: ID of the vote to get the status of
-      operationId: getVoteStatus
+      operationId: get_vote_status
       tags:
         - vote
       responses:
@@ -83,7 +83,7 @@ paths:
             format: int64
           required: true
           description: ID of the pokemon to get the info of
-      operationId: getPokemon
+      operationId: get_pokemon
       tags:
         - pokemon
       responses:
@@ -104,7 +104,7 @@ paths:
             format: int64
           required: true
           description: Which generation to get pokemon from
-      operationId:  getPokemonListGen
+      operationId:  get_pokemon_list_gen
       tags:
         - pokemonlist
       responses:
@@ -117,7 +117,7 @@ paths:
   /ranks/match:
     get:
       summary: return a head to head matchup between any two pokemon
-      operationId: getMatch
+      operationId: get_match
       tags:
         - getmatch
       responses:
@@ -137,7 +137,7 @@ paths:
             type: integer
           required: true
           description: Which generation to get ranks from
-      operationId: getMatchGen
+      operationId: get_match_gen
       tags:
         - getmatch
       responses:
