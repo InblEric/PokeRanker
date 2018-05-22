@@ -115,7 +115,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PokemonList'
-  /ranks/match:
+  /match:
     get:
       summary: return a head to head matchup between any two pokemon
       operationId: get_match
@@ -128,7 +128,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MatchupData'
-  /ranks/match/gen/{gen}:
+  /match/gen/{gen}:
     get:
       summary: return a head to head matchup of a specific generation
       parameters:

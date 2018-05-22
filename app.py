@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, abort, make_response, request
+from random import randint
 
 app = Flask(__name__)
 
@@ -27,6 +28,14 @@ pokemon = [
         "rank": 3,
         "genRank": 1,
         "elo": 1200
+    },
+    {
+        "pokemon_id": 153,
+        "name": "Bayleef",
+        "gen": 2,
+        "rank": 4,
+        "genRank": 2,
+        "elo": 1200
     }]
 
 votes = []
@@ -34,6 +43,7 @@ votes = []
 # GET /pokemon
 @app.route('/pokeranker/api/v1.0/pokemon', methods=['GET'])
 def get_pokemon_list():
+    # TODO return this as a list sorted by ELO
     return jsonify(pokemon)
 
 # GET /pokemon/gen/{gen}
@@ -43,6 +53,7 @@ def get_pokemon_list_gen(gen):
     if type(gen) is not int or gen < 1 or gen > 7:
         abort(404)
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
+    # TODO return this as a list sorted by ELO
     return jsonify(gen_pokemon)
 
 # GET /pokemon/{pokemon_id} (int)
@@ -112,31 +123,40 @@ def get_vote_status(vote_id):
     if not found:
         abort(404)
 
-# GET /ranks/match
-@app.route('/pokeranker/api/v1.0/ranks/match', methods=['GET'])
+# GET /match
+@app.route('/pokeranker/api/v1.0/match', methods=['GET'])
 def get_match():
-    # TODO get two pokemon from pokemon at random and build this dict
+    index_one = randint(0,len(pokemon)-1)
+    index_two = randint(0,len(pokemon)-1)
+    while index_one == index_two:
+        index_two = randint(0,len(pokemon)-1)
+
     match = {
-        "one": "string",
-        "two": "string",
-        "oneid": 0,
-        "twoid": 0
+        "one": pokemon[index_one]["name"],
+        "two": pokemon[index_two]["name"],
+        "oneid": pokemon[index_one]["pokemon_id"],
+        "twoid": pokemon[index_two]["pokemon_id"]
     }
     return jsonify(match)
 
-# GET /ranks/match/gen/{gen}
-@app.route('/pokeranker/api/v1.0/ranks/match/gen/<int:gen>', methods=['GET'])
+# GET /match/gen/{gen}
+@app.route('/pokeranker/api/v1.0/match/gen/<int:gen>', methods=['GET'])
 def get_match_gen(gen):
     # TODO write helper to validate the gen
     if type(gen) is not int or gen < 1 or gen > 7:
         abort(404)
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
-    # TODO get two pokemon from gen_pokemon at random and build this dict
+
+    index_one = randint(0,len(gen_pokemon)-1)
+    index_two = randint(0,len(gen_pokemon)-1)
+    while index_one == index_two:
+        index_two = randint(0,len(gen_pokemon)-1)
+
     match = {
-        "one": "string",
-        "two": "string",
-        "oneid": 0,
-        "twoid": 0
+        "one": gen_pokemon[index_one]["name"],
+        "two": gen_pokemon[index_two]["name"],
+        "oneid": gen_pokemon[index_one]["pokemon_id"],
+        "twoid": gen_pokemon[index_two]["pokemon_id"]
     }
     return jsonify(match)
 
