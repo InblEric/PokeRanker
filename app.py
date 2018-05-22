@@ -2,15 +2,29 @@ from flask import Flask, jsonify, abort
 
 app = Flask(__name__)
 
-pokemon = [{"pokemon_id": 1,
-    "name": "Bulbasaur",
-    "gen": 1,
-    "rank": 1,
-    "genRank": 1},{"pokemon_id": 2,
-    "name": "Ivysaur",
-    "gen": 1,
-    "rank": 2,
-    "genRank": 2}]
+# TODO this data will eventually be stored in a database
+pokemon = [
+    {
+        "pokemon_id": 1,
+        "name": "Bulbasaur",
+        "gen": 1,
+        "rank": 1,
+        "genRank": 1
+    },
+    {
+        "pokemon_id": 2,
+        "name": "Ivysaur",
+        "gen": 1,
+        "rank": 2,
+        "genRank": 2
+    },
+    {
+        "pokemon_id": 152,
+        "name": "Chikorita",
+        "gen": 2,
+        "rank": 3,
+        "genRank": 1
+    }]
 
 @app.route('/pokeranker/api/v1.0/pokemon', methods=['GET'])
 def get_pokemon_list():
