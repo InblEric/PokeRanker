@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, abort
+from flask import Flask, jsonify, abort, make_response, request
 
 app = Flask(__name__)
 
@@ -54,17 +54,41 @@ def get_pokemon(pokemon_id):
         abort(404)
 
 # GET /votes
-@app.route('/pokeranker/api/v1.0/votes')
+@app.route('/pokeranker/api/v1.0/votes', methods=['GET'])
 def get_votes():
     return jsonify(votes)
 
 # POST /votes
-# TODO
+@app.route('/pokeranker/api/v1.0/votes', methods=['POST'])
+def submit_vote():
+    if not request.json or not 'winner_id' in request.json or not 'loser_id' in request.json:
+        abort(400)
+    if len(votes) == 0:
+        vote = {
+            'vote_id': 1,
+            "status": "new",
+            "winner_id": request.json['winner_id'],
+            "loser_id": request.json['loser_id']
+        }
+    else:
+        vote = {
+            'vote_id': votes[-1]['vote_id'] + 1,
+            "status": "new",
+            "winner_id": request.json['winner_id'],
+            "loser_id": request.json['loser_id']
+        }
+    votes.append(vote)
 
-# GET /votes/{vote_id} (string)
-@app.route('/pokeranker/api/v1.0/votes/<str:vote_id>', methods=['GET'])
+    # TODO: apply ELO changes, update ranks, then set status of new vote to "done"
+    # or you can do this somewhere else using workers or something
+
+    return jsonify(vote), 201
+
+
+# GET /votes/{vote_id} (int)
+@app.route('/pokeranker/api/v1.0/votes/<int:vote_id>', methods=['GET'])
 def get_vote_status(vote_id):
-    if type(vote_id) is not str: # TODO: validate the vote id
+    if type(vote_id) is not int or vote_id < 0 or vote_id > len(votes):
         abort(404)
     found = False
     for vote in votes:
@@ -99,6 +123,14 @@ def get_match_gen(gen):
         "twoid": 0
     }
     return jsonify(match)
+
+@app.errorhandler(404)
+def not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+@app.errorhandler(400)
+def not_found(error):
+    return make_response(jsonify({'error': 'Bad request'}), 400)
 
 if __name__ == '__main__':
     app.run(debug=False)
