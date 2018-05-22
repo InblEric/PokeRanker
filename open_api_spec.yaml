@@ -196,6 +196,7 @@ components:
         - gen
         - rank
         - genRank
+        - elo
       properties:
         pokemon_id:
           type: integer
@@ -209,6 +210,9 @@ components:
           type: integer
           format: int64
         genRank:
+          type: integer
+          format: int64
+        elo:
           type: integer
           format: int64
     MatchupData:

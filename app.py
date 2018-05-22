@@ -9,21 +9,24 @@ pokemon = [
         "name": "Bulbasaur",
         "gen": 1,
         "rank": 1,
-        "genRank": 1
+        "genRank": 1,
+        "elo": 1200
     },
     {
         "pokemon_id": 2,
         "name": "Ivysaur",
         "gen": 1,
         "rank": 2,
-        "genRank": 2
+        "genRank": 2,
+        "elo": 1200
     },
     {
         "pokemon_id": 152,
         "name": "Chikorita",
         "gen": 2,
         "rank": 3,
-        "genRank": 1
+        "genRank": 1,
+        "elo": 1200
     }]
 
 votes = []
