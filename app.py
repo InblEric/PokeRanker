@@ -99,8 +99,8 @@ def submit_vote():
         vote = {
             'vote_id': votes[-1]['vote_id'] + 1,
             "status": "new",
-            "winner_id": request.json['winner_id'],
-            "loser_id": request.json['loser_id']
+            "winner_id": winner_id,
+            "loser_id": loser_id
         }
     votes.append(vote)
 
