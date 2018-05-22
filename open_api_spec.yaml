@@ -7,20 +7,32 @@ info:
 servers:
   - url: http://127.0.0.1:5000/api/v1.0
 paths:
-  /ranks:
+  /pokemon:
     get:
-      summary: return rank data for all pokemon
-      operationId: getRanks
+      summary: return list of all pokemon (includes rank info)
+      operationId: getPokemonList
       tags:
-        - ranklist
+        - pokemonlist
       responses:
         '200':
-          description: pokemon ranks
+          description: pokemon list
           content:
             application/json:
               schema:
-                #$ref: '#/components/schemas/ArrayOfUsers'
-                $ref: '#/components/schemas/RankList'
+                $ref: '#/components/schemas/PokemonList'
+  /votes:
+    get:
+      summary: get list of all votes
+      operationId: getVotes
+      tags:
+        - vote
+      responses:
+        '200':
+          description: list of votes
+          content:
+            application.json:
+              schema:
+                $ref: '#/components/schemas/VoteList'
     post:
       summary: update ranking based on who the user voted for
       requestBody:
@@ -29,8 +41,8 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RankVote'
-      operationId: rankPokemon
+              $ref: '#/components/schemas/UserVote'
+      operationId: submitVote
       tags:
         - vote
       responses:
@@ -39,10 +51,30 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ResultID'
+                $ref: '#/components/schemas/Vote'
+  /votes/{vote_id}:
+    get:
+      summary: return status of a vote
+      parameters:
+        - in: path
+          name: vote_id
+          schema:
+            type: string
+          required: true
+          description: ID of the vote to get the status of
+      operationId: getVoteStatus
+      tags:
+        - vote
+      responses:
+        '200':
+          description: Status of vote
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vote'
   /pokemon/{pokemon_id}:
     get:
-      summary: return ranking of specific pokemon
+      summary: return information of specific pokemon
       parameters:
         - in: path
           name: pokemon_id
@@ -50,20 +82,20 @@ paths:
             type: integer
             format: int64
           required: true
-          description: ID of the pokemon to get the ranking of
-      operationId: getPokemonRank
+          description: ID of the pokemon to get the info of
+      operationId: getPokemon
       tags:
         - pokemon
       responses:
         '200':
-          description: Rank of specific pokemon
+          description: Info of specific pokemon
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RankData'
-  /pokemon/{gen}/{pokemon_id}:
+                $ref: '#/components/schemas/PokemonData'
+  /pokemon/gen/{gen}:
     get:
-      summary: Return ranking of specific pokemon within its generation
+      summary: return list of pokemon for specified generation
       parameters:
         - in: path
           name: gen
@@ -71,45 +103,17 @@ paths:
             type: integer
             format: int64
           required: true
-          description: Which generation to get ranks from
-        - in: path
-          name: pokemon_id
-          schema:
-            type: integer
-            format: int64
-          required: true
-          description: ID of the pokemon to get the ranking of
-      operationId: getPokemonRankGen
+          description: Which generation to get pokemon from
+      operationId:  getPokemonListGen
       tags:
-        - pokemon
-      responses:
-        '200':
-          description: Rank of specific pokemon
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RankData'
-  /ranks/{gen}:
-    get:
-      summary: return rankings for specified generation
-      parameters:
-        - in: path
-          name: gen
-          schema:
-            type: integer
-            format: int64
-          required: true
-          description: Which generation to get ranks from
-      operationId:  getRanksGen
-      tags:
-        - ranklist
+        - pokemonlist
       responses:
         '200':
           description: pokemon ranks
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RankList'
+                $ref: '#/components/schemas/PokemonList'
   /ranks/match:
     get:
       summary: return a head to head matchup between any two pokemon
@@ -123,7 +127,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MatchupData'
-  /ranks/{gen}/match:
+  /ranks/match/gen/{gen}:
     get:
       summary: return a head to head matchup of a specific generation
       parameters:
@@ -142,17 +146,20 @@ paths:
           content:
             application/json:
               schema:
-                #$ref: '#/components/schemas/ArrayOfUsers'
                 $ref: '#/components/schemas/MatchupData'
 
 components:
   schemas:
 
-    RankList:
+    PokemonList:
       type: array
       items:
-        $ref: "#/components/schemas/RankData"
-    RankVote:
+        $ref: "#/components/schemas/PokemonData"
+    VoteList:
+      type: array
+      items:
+        $ref: "#/components/schemas/UserVote"
+    UserVote:
       required:
         - winner_id
         - loser_id
@@ -163,14 +170,17 @@ components:
         loser_id:
           type: integer
           format: int64
-    ResultID:
+    Vote:
       required:
         - vote_id
+        - status
       properties:
         vote_id:
           type: integer
           format: int64
-    RankData:
+        status:
+          type: string
+    PokemonData:
       required:
         - pokemon_id
         - name
