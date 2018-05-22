@@ -39,6 +39,7 @@ def get_pokemon_list():
 # GET /pokemon/gen/{gen}
 @app.route('/pokeranker/api/v1.0/pokemon/gen/<int:gen>', methods=['GET'])
 def get_pokemon_list_gen(gen):
+    # TODO write helper to validate the gen
     if type(gen) is not int or gen < 1 or gen > 7:
         abort(404)
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
@@ -47,6 +48,7 @@ def get_pokemon_list_gen(gen):
 # GET /pokemon/{pokemon_id} (int)
 @app.route('/pokeranker/api/v1.0/pokemon/<int:pokemon_id>', methods=['GET'])
 def get_pokemon(pokemon_id):
+    # TODO write helper to validate the ids
     if type(pokemon_id) is not int or pokemon_id < 1 or pokemon_id > 807:
         abort(404)
     found = False
@@ -64,14 +66,23 @@ def get_votes():
 # POST /votes
 @app.route('/pokeranker/api/v1.0/votes', methods=['POST'])
 def submit_vote():
-    if not request.json or not 'winner_id' in request.json or not 'loser_id' in request.json:
+    # TODO write helper to validate the request json
+    if not request.json or not 'winner_id' in request.json \
+        or not 'loser_id' in request.json or len(request.json.keys()) is not 2:
         abort(400)
+    # TODO write helper to validate the ids
+    winner_id = request.json['winner_id']
+    loser_id = request.json['loser_id']
+    if type(winner_id) is not int or winner_id < 1 or winner_id > 807:
+        abort(404)
+    if type(loser_id) is not int or loser_id < 1 or loser_id > 807:
+        abort(404)
     if len(votes) == 0:
         vote = {
             'vote_id': 1,
             "status": "new",
-            "winner_id": request.json['winner_id'],
-            "loser_id": request.json['loser_id']
+            "winner_id": winner_id,
+            "loser_id": loser_id
         }
     else:
         vote = {
@@ -91,6 +102,7 @@ def submit_vote():
 # GET /votes/{vote_id} (int)
 @app.route('/pokeranker/api/v1.0/votes/<int:vote_id>', methods=['GET'])
 def get_vote_status(vote_id):
+    # TODO write helper to validate the ids
     if type(vote_id) is not int or vote_id < 0 or vote_id > len(votes):
         abort(404)
     found = False
@@ -115,6 +127,7 @@ def get_match():
 # GET /ranks/match/gen/{gen}
 @app.route('/pokeranker/api/v1.0/ranks/match/gen/<int:gen>', methods=['GET'])
 def get_match_gen(gen):
+    # TODO write helper to validate the gen
     if type(gen) is not int or gen < 1 or gen > 7:
         abort(404)
     gen_pokemon = [poke for poke in pokemon if poke["gen"] == gen]
