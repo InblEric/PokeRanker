@@ -11,7 +11,7 @@ pokemon = [
         "gen": 1,
         "rank": 1,
         "genRank": 1,
-        "elo": 1200
+        "elo": 1200.0
     },
     {
         "pokemon_id": 2,
@@ -19,7 +19,7 @@ pokemon = [
         "gen": 1,
         "rank": 2,
         "genRank": 2,
-        "elo": 1200
+        "elo": 1200.0
     },
     {
         "pokemon_id": 152,
@@ -27,7 +27,7 @@ pokemon = [
         "gen": 2,
         "rank": 3,
         "genRank": 1,
-        "elo": 1200
+        "elo": 1200.0
     },
     {
         "pokemon_id": 153,

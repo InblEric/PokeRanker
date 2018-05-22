@@ -213,8 +213,8 @@ components:
           type: integer
           format: int64
         elo:
-          type: integer
-          format: int64
+          type: number
+          format: float
     MatchupData:
       required:
         - one
