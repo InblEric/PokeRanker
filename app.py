@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, abort, make_response, request
 from random import randint
+from tasks import update_elos
 
 app = Flask(__name__)
 
@@ -88,24 +89,22 @@ def submit_vote():
         abort(404)
     if type(loser_id) is not int or loser_id < 1 or loser_id > 807:
         abort(404)
+    vote_id = -1
     if len(votes) == 0:
-        vote = {
-            'vote_id': 1,
-            "status": "new",
-            "winner_id": winner_id,
-            "loser_id": loser_id
-        }
+        vote_id = 1
     else:
-        vote = {
-            'vote_id': votes[-1]['vote_id'] + 1,
-            "status": "new",
-            "winner_id": winner_id,
-            "loser_id": loser_id
-        }
+        vote_id = votes[-1]['vote_id'] + 1
+    if vote_id == -1:
+        abort(400)
+    vote = {
+        'vote_id': vote_id,
+        "status": "pending",
+        "winner_id": winner_id,
+        "loser_id": loser_id
+    }
     votes.append(vote)
 
-    # TODO: apply ELO changes, update ranks, then set status of new vote to "done"
-    # or you can do this somewhere else using workers or something
+    result = update_elos.delay(winner_id, loser_id, vote_id)
 
     return jsonify(vote), 201
 
