@@ -50,6 +50,22 @@ In another terminal:
 
 ```
 $ curl -i http://127.0.0.1:5000/pokeranker/api/v1.0/pokemon
+HTTP/1.0 200 OK
+Content-Type: application/json
+Content-Length: 506
+Server: Werkzeug/0.14.1 Python/3.6.0
+Date: Thu, 24 May 2018 23:39:06 GMT
+
+[
+  {
+    "elo": 1200.0,
+    "gen": 1, 
+    "genRank": 1,
+    "name": "Bulbasaur",
+    "pokemon_id": 1,
+    "rank": 1
+  }
+]
 ```
 
 ## Teardown
