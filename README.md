@@ -3,9 +3,9 @@ Pokeranker
 
 ## Setup
 
-Install docker and redis.
-
 Clone the repository.
+
+Install docker and redis and mongo.
 
 ```
 $ pip install -r requirements.txt
