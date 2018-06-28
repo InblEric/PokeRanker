@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, abort, make_response, request
+from flask_cors import CORS
 from random import randint
 from tasks import update_elos
 from pymongo import MongoClient, DESCENDING, ASCENDING
@@ -9,6 +10,8 @@ pokemon_collection = db.pokemon_collection
 vote_collection = db.vote_collection
 
 app = Flask(__name__)
+
+CORS(app)
 
 # GET /pokemon
 @app.route('/pokeranker/api/v1.0/pokemon', methods=['GET'])
