@@ -1,10 +1,13 @@
+import os
 from flask import Flask, jsonify, abort, make_response, request
 from flask_cors import CORS
 from random import randint
 from tasks import update_elos
 from pymongo import MongoClient, DESCENDING, ASCENDING
 
-client = MongoClient()
+client = MongoClient(
+    os.environ['DB_PORT_27017_TCP_ADDR'],
+    27017)
 db = client.pokedatabase
 pokemon_collection = db.pokemon_collection
 vote_collection = db.vote_collection
@@ -139,4 +142,4 @@ def not_found(error):
     return make_response(jsonify({'error': 'Bad request'}), 400)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(host='0.0.0.0', debug=True)

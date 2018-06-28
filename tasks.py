@@ -1,15 +1,18 @@
+import os
 from celery import Celery, task
 
 from pymongo import MongoClient
 
 import math
 
-client = MongoClient()
+client = MongoClient(
+    os.environ['DB_PORT_27017_TCP_ADDR'],
+    27017)
 db = client.pokedatabase
 pokemon_collection = db.pokemon_collection
 vote_collection = db.vote_collection
 
-celery = Celery("tasks", broker='redis://localhost:6379/0', backend='redis://localhost:6379/0')
+celery = Celery("tasks", broker='redis://redis:6379/0', backend='redis://redis:6379/0')
 
 def k_factor(elo):
     # I'm not sure where this came from:
