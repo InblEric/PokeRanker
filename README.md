@@ -45,7 +45,7 @@ for poke in pokemon:
   pokemon_collection.insert_one(poke)
 ```
 
-### Without Docker
+### Without Docker Compose (still uses docker)
 
 Install docker and redis and mongo.
 
@@ -114,7 +114,7 @@ Date: Thu, 24 May 2018 23:39:06 GMT
 
 ## Teardown
 
-### Docker Teardown
+### Docker Compose Teardown
 
 ```
 $ ctrl c
@@ -124,7 +124,7 @@ Remove any docker images or containers you want to afterwards
 
 Warning: if you remove the mongo or redis containers you will lose data/queued votes
 
-### Without Docker Teardown
+### Without Docker Compose Teardown
 
 Warning: if you kill the mongo docker container you will lose all vote/elo data
 
