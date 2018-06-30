@@ -1,0 +1,28 @@
+web:
+  build: .
+  command: python -u app.py
+  ports:
+    - "5000:5000"
+  volumes:
+    - .:/app
+  links:
+    - db
+    - redis
+db:
+  image: mongo
+  ports:
+    - "27017:27017"
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+celery:
+  build: .
+  volumes:
+    - .:/app
+  environment:
+    C_FORCE_ROOT: "True"
+  links:
+    - db
+    - redis
+  command: celery -A tasks worker --loglevel=info
